@@ -1,9 +1,9 @@
 
 int main() {
+    char p = 'h';
     uartinit();
-    char c = 'A';
-    c++;
-    uartputc(c);
+    uartputc(p);
+
 
     return 0;
 }

@@ -1,13 +1,60 @@
-使用 `qemu` 加载自己的内核
+virt QEMU 虚拟机的内存布局
 
-```shell
- qemu-system-riscv64 -machine virt -m 128M -nographic -gdb tcp::1234
- -kernel riscv-from-scratch/build/a.out  
- -drive file=busybear-linux/busybear.bin,format=raw,id=hd0
- -device virtio-blk-device,drive=hd0,bus=virtio-mmio-bus.0 -bios none -S
+```c
+/****************************
+0x0c000000 --
+    |       |  interrupt-controller
+0x10000000 --
+            |  uart
+0x10000100 --
+    |
+    |
+    |
+0x10001000 --
+    |       |
+0x10002000 --
+    |       |
+0x10003000 --
+    |       |
+0x10004000 --
+    |       |   virtio,mmio
+0x10005000 --
+    |       |
+0x10006000 --
+    |       |
+0x10007000 --
+    |       |
+0x10008000 --
+
+0x20000000 --
+    |       |
+    |       |  flash
+    |       |
+0x24000000 --
+    |
+    |
+    |
+0x30000000 --
+    |       |
+    |       |  PCI
+    |       |
+0x40000000 --
+    |
+    |
+    |
+    |
+    |
+0x80000000 -----RAM
+                text code
+                initialized data
+                bss
+                heap
+
+
+
+                stack
+                env cli args
+
+0x88000000 -----
+****************************/
 ```
-
-编译语句
-
-```shell
-riscv64-unknown-elf-gcc -g -ffreestanding -O0 -Wl,--gc-sections -nostartfiles -nostdlib -nodefaultlibs -Wl,-T,riscv64-virt.ld boot.s ns16550a.c main.c trap.s -o ../build/a.out

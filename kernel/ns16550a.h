@@ -1,3 +1,8 @@
+/*
+ * NS16550A protocol
+ * init read/write reg 
+ *
+ */  
 #ifndef _DF_RISCV_NS16550A_H
 #define _DF_RISCV_NS16550A_H
 
@@ -20,5 +25,9 @@
 volatile unsigned char *Reg(int reg);
 unsigned char ReadReg(int reg);
 void WriteReg(int reg, char c);
+
+// void uartinit();
+// void uartputc(int c);
+// int uartgetc();
 
 #endif // _DF_RISCV_NS16550A_H

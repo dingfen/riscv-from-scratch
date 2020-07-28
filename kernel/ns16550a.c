@@ -35,6 +35,10 @@ void uartputc(int c) {
 }
 
 int uartgetc() {
-
+    if (ReadReg(REG_LSR) & (0x01)) {
+        return ReadReg(REG_RHR);
+    } else {
+        return -1;
+    }
 }
 

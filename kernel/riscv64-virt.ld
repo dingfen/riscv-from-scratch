@@ -14,7 +14,7 @@ MEMORY
 }
 /* >>> End of my addition <<< */
 ENTRY(_start)
-SEARCH_DIR("/home/cliff/opt/riscv/riscv64-unknown-elf/lib");
+SEARCH_DIR("/home/dingfeng/riscv-tool-chain/riscv64-unknown-elf/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
