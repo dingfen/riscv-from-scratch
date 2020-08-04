@@ -22,7 +22,7 @@ SECTIONS
   /* >>> My addition <<< */
   PROVIDE(__stack_top = ORIGIN(RAM) + LENGTH(RAM));
   PROVIDE(__uart_base_addr = 0x10000000);
-  PROVIDE(__bss_end = 0x83000000);
+  PROVIDE(__bss_end = __BSS_END__);
   /* >>> End of addition <<< */
   .interp         : { *(.interp) }
   .note.gnu.build-id  : { *(.note.gnu.build-id) }
@@ -181,7 +181,7 @@ SECTIONS
   }
   _edata = .; PROVIDE (edata = .);
   . = .;
-  __bss_start = 0x82800000;
+  __bss_start = .;
   .sbss           :
   {
     *(.dynsbss)

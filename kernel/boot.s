@@ -1,7 +1,7 @@
 .option norvc
-.section .data
+.section .rodata
 
-.section .text.init
+.section .init,"ax"
 .global _start
 _start:
     # read our hart identifier into t0
