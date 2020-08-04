@@ -1,5 +1,7 @@
 .option norvc
-.section .rodata
+.section .data
+msg:
+    .ascii "hello"
 
 .section .init,"ax"
 .global _start
@@ -23,11 +25,24 @@ _start:
     la  a1, __bss_end
 
     bgeu a0, a1, 2f
-1:
+l1:
     sd   zero, (a0)
     addi a0, a0, 8
-    bltu a0, a1, 1b
+    bltu a0, a1, l1
 2:
+#     mv   a0, gp
+#     la   a1, flash_sdata
+#     la   a2, data_size
+#     beqz a2, 3f
+# l2:
+#     ld   t0, (a1)
+#     sd   t0, (a0)
+#     addi a0, a0, 8
+#     addi a1, a1, 8
+#     addi a2, a2, -8
+#     bgtz a2, l2
+
+3:
     li   t5, 0xffff
     csrw medeleg, t5
     csrw mideleg, t5

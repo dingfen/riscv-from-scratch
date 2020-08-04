@@ -1,7 +1,7 @@
 CC=riscv64-unknown-elf-gcc
 TARGET=build/a.out
 CFLAG= -g -ffreestanding -O0 -Wl,--gc-sections -nostartfiles -nostdlib -nodefaultlibs
-VIRTLD=-Wl,-T,kernel/riscv64-virt.ld
+VIRTLD=-Wl,-T,kernel/my-virt.ld
 
 all: kernel/boot.s kernel/ns16550a.c kernel/main.c kernel/trap.s
 	$(CC) $(CFLAG) $(VIRTLD) $^ -o $(TARGET)
