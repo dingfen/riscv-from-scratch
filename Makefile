@@ -1,10 +1,19 @@
 CC=riscv64-unknown-elf-gcc
-TARGET=build/a.out
-CFLAG= -g -ffreestanding -O0 -Wl,--gc-sections -nostartfiles -nostdlib -nodefaultlibs
-VIRTLD=-Wl,-T,kernel/my-virt.ld
+AS=riscv64-unknown-elf-as
+LD=riscv64-unknown-elf-ld
 
-all: kernel/boot.s kernel/ns16550a.c kernel/main.c kernel/trap.s
-	$(CC) $(CFLAG) $(VIRTLD) $^ -o $(TARGET)
+TARGET=build/a.out
+CFLAG= -g -c
+VIRTLD=-T kernel/my-virt.ld
+
+all: build/boot.o build/trap.o build/main.o build/ns16550a.o
+	$(LD) $(VIRTLD) $^ -o $(TARGET)
+
+build/%.o: kernel/%.s
+	$(AS) -g $^ -o $@
+
+build/%.o: kernel/%.c
+	$(CC) $(CFLAG) $^ -o $@
 
 qemudebug: $(TARGET)
 	qemu-system-riscv64 -machine virt -m 128M -nographic -gdb tcp::1234 \
@@ -15,3 +24,6 @@ qemu: $(TARGET)
 	qemu-system-riscv64 -machine virt -m 128M -nographic \
  	-kernel build/a.out  \
     -bios none
+
+clean:
+	rm build/*

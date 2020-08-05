@@ -22,6 +22,9 @@ SECTIONS {
         ram_sdata = .;
         * (.data);
     }
+    .rodata : {
+        * (.rodata);
+    }
     ram_edata = .;
     data_size = ram_edata - ram_sdata;
 

@@ -1,7 +1,7 @@
 .option norvc
 .section .data
 msg:
-    .ascii "hello"
+    .string: .ascii "hello"
 
 .section .init,"ax"
 .global _start

@@ -1,8 +1,8 @@
-
+static char sg[] = "hello world!";
 
 int main() {
-    char p = 'h';
     uartinit();
-    uartputc(p);
+    for(int i =0;i<12;i++)
+        uartputc(sg[i]);
     return 0;
 }
