@@ -26,6 +26,8 @@ void uartinit() {
     WriteReg(REG_FCR, 0x07);
     // enable receiver interrupts
     WriteReg(REG_IER, 0x01);
+
+    WriteReg(REG_LSR, 0x00);
 }
 
 void uartputc(int c) {

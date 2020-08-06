@@ -1,7 +1,4 @@
 .option norvc
-.section .data
-msg:
-    .string: .ascii "hello"
 
 .section .init,"ax"
 .global _start
@@ -30,19 +27,6 @@ l1:
     addi a0, a0, 8
     bltu a0, a1, l1
 2:
-#     mv   a0, gp
-#     la   a1, flash_sdata
-#     la   a2, data_size
-#     beqz a2, 3f
-# l2:
-#     ld   t0, (a1)
-#     sd   t0, (a0)
-#     addi a0, a0, 8
-#     addi a1, a1, 8
-#     addi a2, a2, -8
-#     bgtz a2, l2
-
-3:
     li   t5, 0xffff
     csrw medeleg, t5
     csrw mideleg, t5
@@ -51,7 +35,12 @@ l1:
     csrw mstatus, t0
     la   t1, main
     csrw mepc, t1
-    la   t2, rv_trap_vector
+
+    li   t5, 0x2004000  # put timer in mtimecmp 
+    li   t4, 10000
+    sw   t4, 0(t5)
+
+    li   t2, 0x80001000
     csrw mtvec, t2
     li   t3, (1 << 3) | (1 << 7) | (1 << 11)
     csrw mie, t3

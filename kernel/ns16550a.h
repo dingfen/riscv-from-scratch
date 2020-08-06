@@ -26,8 +26,8 @@ volatile unsigned char *Reg(int reg);
 unsigned char ReadReg(int reg);
 void WriteReg(int reg, char c);
 
-// void uartinit();
-// void uartputc(int c);
-// int uartgetc();
+void uartinit();
+void uartputc(int c);
+int uartgetc();
 
 #endif // _DF_RISCV_NS16550A_H

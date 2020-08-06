@@ -2,6 +2,10 @@ virt QEMU 虚拟机的内存布局
 
 ```c
 /****************************
+0x02000000 --
+            | clint (core local interrupt)
+0x02010000-- 
+
 0x0c000000 --
     |       |  interrupt-controller
 0x10000000 --
@@ -46,6 +50,9 @@ virt QEMU 虚拟机的内存布局
     |
 0x80000000 -----RAM
                 text code
+                |--- boot
+                     main
+                     ns16550a
                 initialized data
                 bss
                 heap
