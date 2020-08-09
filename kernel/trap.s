@@ -9,7 +9,118 @@
 # restore register snapshot 
 # back to main
 .section .text
-.global rv_trap_vector
+.global strap_vector
+.global mtrap_vector
 
-rv_trap_vector:
-    .4byte 0x80001000 
+.align 4
+strap_vector:
+    csrrw a0, mscratch, a0
+    sd a1, 0(a0)
+    sd a2, 8(a0)
+    sd a3, 16(a0)
+
+    li a1, 0x2004000
+    ld a2, 0(a1) 
+    addi a3, a2, 1000
+    sd a3, 0(a1)
+
+    csrr t1, mcause
+
+    ld a3, 16(a0)
+    ld a2, 8(a0)
+    ld a1, 0(a0)
+    csrrw a0, mscratch, a0
+
+    mret
+
+
+.align 4
+mtrap_vector:
+    addi sp, sp, -256
+    sd   ra, 0(sp)
+    sd   sp, 8(sp)
+    sd   gp, 16(sp)
+    sd   tp, 24(sp)
+    sd   t0, 32(sp)
+    sd   t1, 40(sp)
+    sd   t2, 48(sp)
+    sd   s0, 56(sp)
+    sd   s1, 64(sp)
+    sd   a0, 72(sp)
+    sd   a1, 80(sp)
+    sd   a2, 88(sp)
+    sd   a3, 96(sp)
+    sd   a4, 104(sp)
+    sd   a5, 112(sp)
+    sd   a6, 120(sp)
+    sd   a7, 128(sp)
+    sd   s2, 136(sp)
+    sd   s3, 144(sp)
+    sd   s4, 152(sp)
+    sd   s5, 160(sp)
+    sd   s6, 168(sp)
+    sd   s7, 176(sp)
+    sd   s8, 184(sp)
+    sd   s9, 192(sp)
+    sd   s10, 200(sp)
+    sd   s11, 208(sp)
+    sd   t3, 216(sp)
+    sd   t4, 224(sp)
+    sd   t5, 232(sp)
+    sd   t6, 240(sp)
+
+    # get the cause of interrupt or exception
+    csrr a1, mcause
+    andi a1, a1, 0x3f   # get the last 7 bit
+    li   a2, 7          # mtimer interrupt is 7
+    bne  a1, a2, 1f
+
+    # handle timer interrupt
+    la   a1, 0x2004000
+    ld   a2, 0(a1)
+    li   a3, 2000000
+    add  a2, a2, a3
+    sd   a2, 0(a1)
+    
+    li   a0, 97
+    call uartputc
+
+1:
+    csrr t2, mepc
+    addi t1, t2, 4
+    csrw mepc, t1
+
+    ld   ra, 0(sp)
+    ld   sp, 8(sp)
+    ld   gp, 16(sp)
+    # not this, in case we moved CPUs: ld tp, 24(sp)
+    ld   t0, 32(sp)
+    ld   t1, 40(sp)
+    ld   t2, 48(sp)
+    ld   s0, 56(sp)
+    ld   s1, 64(sp)
+    ld   a0, 72(sp)
+    ld   a1, 80(sp)
+    ld   a2, 88(sp)
+    ld   a3, 96(sp)
+    ld   a4, 104(sp)
+    ld   a5, 112(sp)
+    ld   a6, 120(sp)
+    ld   a7, 128(sp)
+    ld   s2, 136(sp)
+    ld   s3, 144(sp)
+    ld   s4, 152(sp)
+    ld   s5, 160(sp)
+    ld   s6, 168(sp)
+    ld   s7, 176(sp)
+    ld   s8, 184(sp)
+    ld   s9, 192(sp)
+    ld   s10, 200(sp)
+    ld   s11, 208(sp)
+    ld   t3, 216(sp)
+    ld   t4, 224(sp)
+    ld   t5, 232(sp)
+    ld   t6, 240(sp)
+  
+    addi sp, sp, 256
+    mret

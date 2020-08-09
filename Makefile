@@ -6,7 +6,7 @@ TARGET=build/a.out
 CFLAG= -g -c
 VIRTLD=-T kernel/my-virt.ld
 
-all: build/boot.o build/trap.o build/main.o build/ns16550a.o build/isr.o
+all: build/boot.o build/trap.o build/main.o build/ns16550a.o build/head.o
 	$(LD) $(VIRTLD) $^ -o $(TARGET)
 
 build/%.o: kernel/%.s
@@ -16,7 +16,7 @@ build/%.o: kernel/%.c
 	$(CC) $(CFLAG) $^ -o $@
 
 qemudebug: $(TARGET)
-	qemu-system-riscv64 -machine virt -m 128M -nographic -gdb tcp::1234 \
+	qemu-system-riscv64 -machine virt -m 128M -nographic -gdb tcp::1235 \
  	-kernel build/a.out  \
  	-bios none -S
 
