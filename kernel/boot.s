@@ -27,17 +27,17 @@ _start:
     addi a0, a0, 8
     bltu a0, a1, 1b
 2:
-    # li   t5, 0xffff
-    # csrw medeleg, t5
-    # csrw mideleg, t5
+    li   t5, 0xffff
+    csrw medeleg, t5
+    csrw mideleg, t5
     la   sp, __stack_top
-    li   t0, (0b11 << 11) | (1 << 7) | (1 << 3)
+    li   t0, (0b01 << 11) | (1 << 7) | (1 << 3)
     csrw mstatus, t0
     la   t1, main
     csrw mepc, t1
 
     li   t5, 0x2004000  # put timer in mtimecmp 
-    li   t4, 1000000
+    li   t4, 2000000
     sw   t4, 0(t5)
 
     la   t2, mtrap_vector

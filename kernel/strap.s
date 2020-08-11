@@ -1,41 +1,8 @@
-# trap.s
-# enabling the interrupt register in main 
-##define an interrupt service routine
-# setup a counter value
-# wait for interrupt counts
-# Interrupt occur
-# save current register snapshot
-# do the interrupt service routine (ISR) 
-# restore register snapshot 
-# back to main
 .section .text
 .global strap_vector
-.global mtrap_vector
 
 .align 4
 strap_vector:
-    csrrw a0, mscratch, a0
-    sd a1, 0(a0)
-    sd a2, 8(a0)
-    sd a3, 16(a0)
-
-    li a1, 0x2004000
-    ld a2, 0(a1) 
-    addi a3, a2, 1000
-    sd a3, 0(a1)
-
-    csrr t1, mcause
-
-    ld a3, 16(a0)
-    ld a2, 8(a0)
-    ld a1, 0(a0)
-    csrrw a0, mscratch, a0
-
-    mret
-
-
-.align 4
-mtrap_vector:
     addi sp, sp, -256
     sd   ra, 0(sp)
     sd   sp, 8(sp)
@@ -70,26 +37,14 @@ mtrap_vector:
     sd   t6, 240(sp)
 
     # get the cause of interrupt or exception
-    csrr a1, mcause
+    csrr a1, scause
     andi a1, a1, 0x3f   # get the last 7 bit
-    li   a2, 7          # mtimer interrupt is 7
+    li   a2, 5     # timer interrupt int S-mode is 5
     bne  a1, a2, 1f
-
-    # handle timer interrupt
-    la   a1, 0x2004000
-    ld   a2, 0(a1)
-    li   a3, 2000000
-    add  a2, a2, a3
-    sd   a2, 0(a1)
     
-    li   a0, 97
-    call uartputc
+    call printime
 
 1:
-    csrr t2, mepc
-    addi t1, t2, 4
-    csrw mepc, t1
-
     ld   ra, 0(sp)
     ld   sp, 8(sp)
     ld   gp, 16(sp)
@@ -123,4 +78,4 @@ mtrap_vector:
     ld   t6, 240(sp)
   
     addi sp, sp, 256
-    mret
+    sret
