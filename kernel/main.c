@@ -1,15 +1,19 @@
+int timer = 0;
+
 int main() {
+    char s[64];
     uartinit();
+    
     int i = 0;
-    while(1) {
+    while(0) {
         i++;
     }
+    sprintf(s, "abc = %x, %%%% and %d\n", 13, 13);
+    printf(s);
     return 0;
 }
 
 
 void printime() {
-    char p[] = "Hello RISC-V \n";
-    for(int i = 0; i < 15; i++)
-        uartputc(p[i]);
+    printf("Hello RISC-V %x\n", timer++);
 }

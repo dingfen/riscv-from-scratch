@@ -62,17 +62,17 @@ mtrap_vector:
     
     # still need to be solved 
     # delegated to S-mode but it is weird
-	# li   a1, 1 << 5
-    # csrw sip, a1
-    # li   a1, 5 | (1<<63)
-    # csrw scause, a1
-    # csrr a2, mepc
-    # csrw sepc, a2
-    # la a2, strap_vector
-    # csrw mepc, a2
+	li   a1, 1 << 5
+    csrw sip, a1
+    li   a1, 5 | (1<<63)
+    csrw scause, a1
+    csrr a2, mepc
+    csrw sepc, a2
+    la a2, strap_vector
+    csrw mepc, a2
     
     # use this if handle timer interrupt in M-mode
-    call printime
+    # call printime
 
 1:
     ld   ra, 0(sp)
