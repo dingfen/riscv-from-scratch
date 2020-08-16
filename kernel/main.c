@@ -1,15 +1,14 @@
+#include "ns16550a.h"
+#include "riscv.h"
+
 int timer = 0;
 
 int main() {
-    char s[64];
     uartinit();
-    
     int i = 0;
-    while(0) {
+    while(1) {
         i++;
     }
-    sprintf(s, "abc = %x, %%%% and %d\n", 13, 13);
-    printf(s);
     return 0;
 }
 

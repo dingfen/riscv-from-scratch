@@ -27,6 +27,7 @@ _start:
     addi a0, a0, 8
     bltu a0, a1, 1b
 2:
+    # delegate all interrupts and exceptions to supervisor mode
     li   t5, 0xffff
     csrw medeleg, t5
     csrw mideleg, t5
@@ -41,6 +42,7 @@ _start:
     sw   t4, 0(t5)
 
     la   t2, mtrap_vector
+    addi t2, t2, 1
     csrw mtvec, t2
     li   t3, (1 << 3) | (1 << 7) | (1 << 11)
     csrw mie, t3
