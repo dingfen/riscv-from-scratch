@@ -47,6 +47,12 @@ int itoa(int num, char *str, int base) {
 }
 
 
+/**
+ * @param s  output string after replacement
+ * @param fmt input string format
+ * @param arg the variable arguments
+ * @return the length of output string s
+ */ 
 int vsprintf(char * s, const char * fmt, va_list arg) {
     int i, j, c, d;
     int tmp;
@@ -62,8 +68,7 @@ int vsprintf(char * s, const char * fmt, va_list arg) {
         } else {
             // %d %x %s and %% 
             d = fmt[++i] & 0xff;
-            switch (d)
-            {
+            switch (d) {
             case 'd':
                 tmp = va_arg(arg, int);
                 tmp = itoa(tmp, tmpstr, 10);
@@ -82,7 +87,8 @@ int vsprintf(char * s, const char * fmt, va_list arg) {
                 j += strlen(pt);
                 break;
             case '%':
-                s[j++] = '%'; 
+                s[j++] = '%';
+                break;
             default:
                 break;
             }
@@ -108,9 +114,8 @@ int sprintf(char * str, const char * fmt, ...) {
  */ 
 int printf(const char *fmt, ...) {
     va_list va;
-    int i, j, c, d, tmp;
+    int i;
     char str[1024];
-    char *pt;
 
     va_start(va, fmt);
     int len = vsprintf(str, fmt, va);

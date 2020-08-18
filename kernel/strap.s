@@ -39,10 +39,13 @@ strap_vector:
     # get the cause of interrupt or exception
     csrr a1, scause
     andi a1, a1, 0x3f   # get the last 7 bit
-    li   a2, 5     # timer interrupt int S-mode is 5
+    li   a2, 1          # software interrupt int S-mode is 1
     bne  a1, a2, 1f
     
     call printime
+    
+    li   a1, 0
+    csrw sip, a1
 
 1:
     ld   ra, 0(sp)

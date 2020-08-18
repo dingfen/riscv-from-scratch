@@ -46,6 +46,12 @@ _start:
     csrw mtvec, t2
     li   t3, (1 << 3) | (1 << 7) | (1 << 11)
     csrw mie, t3
+    # la   t2, strap_vector
+    # csrw stvec, t2
+    # li   t3, (1 << 1) | (1 << 5) | (1 << 9)
+    # csrw sie, t3
+    # li   t0, 1 << 1
+    # csrw sstatus, t0
     la   ra, 4f
     mret
 
