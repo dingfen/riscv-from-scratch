@@ -6,7 +6,7 @@ MEMORY
 }
 
 SECTIONS {
-    PROVIDE(__stack_top = 0x88000000);
+    PROVIDE(__stack_top = 0x80100000);
     PROVIDE(__uart_base_addr = 0x10000000);
     
     . = 0x80000000;
@@ -26,7 +26,7 @@ SECTIONS {
         * (.rodata);
     }
     ram_edata = .;
-    data_size = ram_edata - ram_sdata;
+    /* data_size = ram_edata - ram_sdata; */
 
     __bss_start = .;
     .bss : {

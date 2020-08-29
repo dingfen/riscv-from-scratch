@@ -6,8 +6,8 @@ TARGET=build/a.out
 CFLAG= -c -g -ffreestanding
 VIRTLD=-T kernel/my-virt.ld
 
-all: build/boot.o build/main.o build/mtrap.o build/strap.o build/ns16550a.o \
-	build/print.o build/string.o
+all: build/boot.o build/main.o build/mm.o build/ns16550a.o \
+	build/print.o build/string.o build/mtrap.o build/strap.o
 	$(LD) $(VIRTLD) $^ -o $(TARGET)
 
 build/%.o: kernel/%.s

@@ -1,4 +1,4 @@
-.section .text
+
 .global strap_vector
 
 .align 4

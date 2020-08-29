@@ -1,3 +1,4 @@
+#include "dflib.h"
 
 char *strcpy(char * dst, const char * src) {
     if (!src) {
@@ -17,4 +18,11 @@ int strlen(const char * s) {
         return len;
     for(; (s[len] & 0xff) !=0; len++) ;
     return len;
+}
+
+void memset(void *p, char value, unsigned size) {
+    char *pm = (char *)p;
+    for(int i = 0; i < size; i++) {
+        *pm++ = value;
+    }
 }

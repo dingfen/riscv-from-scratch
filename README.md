@@ -56,9 +56,11 @@ virt QEMU 虚拟机的内存布局
                 initialized data
                 bss
                 heap
-
-
-
+                |
+                |
+                |
+                |
+                |
                 stack
                 env cli args
 

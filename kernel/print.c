@@ -1,5 +1,4 @@
-#include <stdarg.h>
-
+#include "dflib.h"
 #include "ns16550a.h"
 
 /**
