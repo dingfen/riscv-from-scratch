@@ -32,6 +32,7 @@ typedef uint64 *PageTable_t;
 
 void initmm();
 void *kalloc();
+void kfree(void *p);
 
 uint64 page_aligndown(uint64 addr);
 uint64 PA2PTE(uint64);
@@ -40,6 +41,6 @@ uint64 PTE2PA(uint64);
 int get_pagenum(int level, uint64 va);
 PTE_t* virt2phys(PageTable_t table, uint64 va);
 
-void map(PageTable_t table, uint64 va, uint64 pa, uint64 size);
+void map(PageTable_t table, uint64 va, uint64 pa, uint64 size, uint64 mode);
 
 #endif // _DF_RISCV_MM_H

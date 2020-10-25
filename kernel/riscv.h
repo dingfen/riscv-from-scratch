@@ -6,15 +6,7 @@
 #ifndef _DF_RISCV_RISCV_H
 #define _DF_RISCV_RISCV_H
 
-typedef unsigned int   uint;
-typedef unsigned short ushort;
-typedef unsigned char  uchar;
-
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int  uint32;
-typedef unsigned long uint64;
-
+#include "dflib.h"
 
 static inline void w_stvec(uint64 x) {
   asm volatile("csrw stvec, %0" : : "r" (x));

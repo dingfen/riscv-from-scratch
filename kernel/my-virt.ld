@@ -31,6 +31,7 @@ SECTIONS {
     __bss_start = .;
     .bss : {
         * (.bss);
+        * (.sbss);
     }
     __bss_end = .;
 }

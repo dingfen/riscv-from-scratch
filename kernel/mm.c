@@ -32,14 +32,14 @@ void initmm() {
     }
     kernel_pagatable = (PageTable_t)kalloc();
     memset(kernel_pagatable, 0, PAGESIZE);
-    map(kernel_pagatable, 0x2000000, 0x2000000, 0x10000);
-    map(kernel_pagatable, 0x10000000, 0x10000000, 0x100);
-    map(kernel_pagatable, 0x80000000, 0x80000000, 0x8000000);
+    map(kernel_pagatable, 0x2000000, 0x2000000, 0x10000, PTE_R | PTE_W);
+    map(kernel_pagatable, 0x10000000, 0x10000000, 0x100, PTE_R | PTE_W);
+    map(kernel_pagatable, 0x80000000, 0x80000000, 0x100000, PTE_X | PTE_R | PTE_W);
 }
 
 /** 
  * try to alloc a 4KB page
- * @return if no space anymore return NULL
+ * @return return a pointer to a new page. If no page anymore, return NULL
  */ 
 void* kalloc() {
     FreePage_t *pt = kmem;
@@ -102,16 +102,17 @@ PTE_t *virt2phys(PageTable_t table, uint64 va) {
  * @param table input, page table pointer
  * @param va    input, virtual address 
  * @param pa    input, physical address 
+ * @param mode  PTE mode control
  * @return when map finished, the pa address will be mapped to va 
  * to visit pa just use va after paging
  */ 
-void map(PageTable_t table, uint64 va, uint64 pa, uint64 size) {
+void map(PageTable_t table, uint64 va, uint64 pa, uint64 size, uint64 mode) {
     uint64 pgstart = page_aligndown(va);
     uint64 pglast = page_aligndown(va + size-1);
 
     for(; pgstart <= pglast; pgstart += PAGESIZE, pa += PAGESIZE) {
         PTE_t *p = virt2phys(table, pgstart);
-        *p = ((pa >> PAGEOFF) << 10) | PTE_V | PTE_X | PTE_R | PTE_W;
+        *p = ((pa >> PAGEOFF) << 10) | PTE_V | mode;
     }
     return;
 }

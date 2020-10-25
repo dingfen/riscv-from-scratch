@@ -5,8 +5,9 @@ LD=riscv64-unknown-elf-ld
 TARGET=build/a.out
 CFLAG= -c -g -ffreestanding
 VIRTLD=-T kernel/my-virt.ld
+CODEMODEL=-mcmodel=medany
 
-all: build/boot.o build/main.o build/mm.o build/ns16550a.o \
+all: build/boot.o build/main.o build/proc.o build/mm.o build/ns16550a.o \
 	build/print.o build/string.o build/mtrap.o build/strap.o
 	$(LD) $(VIRTLD) $^ -o $(TARGET)
 
@@ -14,7 +15,7 @@ build/%.o: kernel/%.s
 	$(AS) -g $^ -o $@
 
 build/%.o: kernel/%.c
-	$(CC) $(CFLAG) $^ -o $@
+	$(CC) $(CFLAG) $(CODEMODEL) $^ -o $@
 
 qemudebug: $(TARGET)
 	qemu-system-riscv64 -machine virt -m 128M -nographic -gdb tcp::1234 \

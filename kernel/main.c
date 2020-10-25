@@ -17,11 +17,10 @@ int main() {
     w_stvec((uint64)strap_vector);
     intr_on();
 
-    int i = 0;
-    while(1) {
-        i++;
-    }
-    return 0;
+    procinit();
+    idleproc();
+
+    scheduler();
 }
 
 
